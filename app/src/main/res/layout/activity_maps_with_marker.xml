@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mapsStatus_RelativeLayout_Root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.kodelabs.boilerplate.presentation.ui.activities.MapsActivity" />
+
+
+    <TextView
+        android:id="@+id/mapsStatus_MainStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/md_black_1000"
+        android:paddingRight="5dp"
+        android:text="Main Status......"
+        android:textColor="@color/md_white_1000" />
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/mapsStatus_SeekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mapsStatus_MainStatus"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="68dp"
+        android:max="45" />
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/mapsStatus_SeekBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mapsStatus_SeekBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp" />
+
+    <ToggleButton
+        android:id="@+id/mapsStatus_ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mapsStatus_SeekBar2"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="15dp"
+        android:text="Up / Down" />
+</RelativeLayout>
+

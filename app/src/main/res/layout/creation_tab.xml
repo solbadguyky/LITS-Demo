@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize">
+
+    <!-- Menu/Back/Action button -->
+    <FrameLayout
+        android:id="@+id/creationTab_actionView"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:tag="actionView">
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/md_blue_grey_50" />
+
+    </FrameLayout>
+
+    <!--Creation Buttons-->
+    <solstudios.app.moduls.creationtab.CreationButton
+        android:id="@+id/creationTab_actionFirstView"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:minWidth="100dp" />
+
+
+</android.support.design.widget.CoordinatorLayout>

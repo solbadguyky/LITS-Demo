@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">LITS</string>
+    <string name="title_activity_base_comment">BaseCommentActivity</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla sapien eu urna sodales, mattis vestibulum mauris eleifend. Morbi ac diam et velit rhoncus rhoncus nec eget ipsum. Ut urna dolor, iaculis ut vehicula sed, finibus nec eros. Duis eros nibh, venenatis id nisi sed, pulvinar ornare augue. Nunc eu pulvinar augue, ac vulputate odio. Cras arcu ex, congue id leo sit amet, fringilla ullamcorper libero. Suspendisse ultrices ligula non risus mattis tincidunt. Nunc in pretium lectus. Duis in scelerisque nisi, in bibendum turpis.
+
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque aliquam felis ut sapien aliquam congue. Etiam lacus elit, interdum a volutpat quis, ullamcorper vitae mauris. Pellentesque magna eros, accumsan ut quam vel, maximus mattis turpis. Nulla et est eget orci venenatis imperdiet. Donec tempus dolor et magna rutrum sollicitudin. Sed auctor urna quis quam faucibus lobortis. Quisque ut pulvinar nisl, a viverra libero. Nunc facilisis velit purus, ac rutrum leo ultrices tempor. Proin neque leo, tempus in euismod posuere, molestie nec tellus.
+
+Cras in rutrum velit. Morbi at varius elit, non aliquam justo. Quisque consequat purus vel dolor gravida, a ultrices nisi auctor. Nullam mattis tellus sapien, ut scelerisque odio pharetra quis. Donec ut efficitur dolor. Fusce vitae nibh nec ante luctus placerat nec at lectus. Morbi eleifend enim sit amet mauris bibendum, a aliquam ipsum iaculis. Quisque vestibulum dictum tortor, hendrerit placerat augue pulvinar sed. Praesent id orci libero. Nam malesuada tempus bibendum. In hac habitasse platea dictumst. Sed augue magna, vulputate ut ante at, condimentum pretium sem. Aliquam at aliquam erat. Nam ut mattis urna.
+
+Proin sed mi ullamcorper, mollis enim quis, gravida urna. Phasellus scelerisque ac augue imperdiet eleifend. Suspendisse mattis placerat dolor, non mollis justo tempus ac. Aenean porttitor ornare neque, id molestie sem placerat at. Nullam rhoncus dignissim urna, id fringilla tellus feugiat nec. Etiam ac orci fermentum, facilisis augue sit amet, tempor sapien. Quisque non ligula ut nunc semper dictum nec ac tellus.
+
+Praesent dui purus, auctor in iaculis id, ultricies sed turpis. Aenean commodo, dui vel facilisis bibendum, urna lorem luctus lorem, non egestas est quam et risus. Integer tempus fringilla odio eu faucibus. Vivamus lectus felis, hendrerit vitae mollis ornare, tempor id odio. Maecenas semper feugiat quam in elementum. Nulla commodo sagittis ultrices. Cras bibendum suscipit eros, nec blandit ex. Donec quis arcu non eros dictum viverra in non tellus.</string>
+</resources>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_modul_creation_tab"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:fitsSystemWindows="false"
+    tools:context="solstudios.app.moduls.creationtab.ModulCreationTabActivity">
+
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:layout_behavior="solstudios.app.moduls.creationtab.CreationAppBarBarBehavior">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main.collapsing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@null"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/main.toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/material_green_accent_700"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <solstudios.app.moduls.creationtab.DraggableLayout
+        android:id="@+id/draggableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="solstudios.app.moduls.creationtab.CreationCoordinateBehavior">
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/creationTab"
+            android:layout_gravity="bottom"
+            android:background="@color/md_white_1000"
+            app:layout_anchor="@+id/creationTab"
+            app:layout_anchorGravity="bottom">
+
+            <TextView
+                android:id="@+id/contentView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="8dp"
+                android:padding="@dimen/material_component_button_text_left_and_right_padding"
+                android:text="@string/lorem"
+                android:textSize="20sp" />
+        </android.support.v4.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/creationTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/material_green_accent_700">
+
+            <include layout="@layout/creation_tab" />
+
+            <View
+                android:id="@+id/creationTab_Editor"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:background="@color/md_red_800" />
+        </FrameLayout>
+    </solstudios.app.moduls.creationtab.DraggableLayout>
+
+</android.support.design.widget.CoordinatorLayout>

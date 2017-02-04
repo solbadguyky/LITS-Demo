@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize">
+
+    <View
+        android:id="@+id/creationView_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/md_amber_A700"
+        android:tag="creationView_1"
+        tools:layout_width="100dp" />
+
+    <View
+        android:id="@+id/creationView_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/md_red_800"
+        android:tag="creationView_2"
+        tools:layout_marginLeft="100dp"
+        tools:layout_width="100dp" />
+
+    <View
+        android:id="@+id/creationView_3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/md_brown_600"
+        android:tag="creationView_3"
+        tools:layout_marginLeft="200dp"
+        tools:layout_width="100dp" />
+</merge>
