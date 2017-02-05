@@ -1,6 +1,8 @@
 package solstudios.app;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.orhanobut.logger.Logger;
 
@@ -21,5 +23,11 @@ public class AndroidApplication extends Application {
 
         // Logger configuration
         // Logger.init().hideThreadInfo().logLevel(LogLevel.NONE);
+    }
+
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(context);
+        MultiDex.install(this);
     }
 }
