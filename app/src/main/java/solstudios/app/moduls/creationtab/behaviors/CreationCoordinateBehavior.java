@@ -1,4 +1,4 @@
-package solstudios.app.moduls.creationtab;
+package solstudios.app.moduls.creationtab.behaviors;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -7,7 +7,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
 import solstudios.app.R;
+import solstudios.app.moduls.creationtab.DraggableLayout;
 
 /**
  * Created by SolbadguyKY on 27-Jan-17.
@@ -81,7 +84,7 @@ public class CreationCoordinateBehavior extends CoordinatorLayout.Behavior<View>
             viewHeight = (int) (parent.getHeight() - draggableLayout.getmHeaderView().getHeight() - draggableLayout.getMiddlePosition());
             //Devices.getDefaultDevice(mContext).getSize(false);
             float distancePercent = calculateDistancePercentage(viewHeight, distance);
-            //Logger.d("onLayoutChild|debug: %d %d", viewHeight, distance);
+            //Logger.d("onLayoutChild|debug: %f", distancePercent);
             View creationChilds = draggableLayout.findViewById(R.id.creationTab);
 
             ///Nếu khoảng cách di chuyển của Dragglayout đạt đủ độ cao sẽ dịch chuyển actionView

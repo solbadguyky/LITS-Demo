@@ -1,4 +1,4 @@
-package solstudios.app.moduls.creationtab;
+package solstudios.app.moduls.creationtab.behaviors;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import solstudios.app.R;
+import solstudios.app.moduls.creationtab.CreationButton;
 
 /**
  * Created by SolbadguyKY on 31-Jan-17.

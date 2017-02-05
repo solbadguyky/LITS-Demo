@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        app:layout_behavior="solstudios.app.moduls.creationtab.CreationAppBarBarBehavior">
+        app:layout_behavior="solstudios.app.moduls.creationtab.behaviors.CreationAppBarBarBehavior">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/main.collapsing"
@@ -50,7 +50,7 @@
         android:id="@+id/draggableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="solstudios.app.moduls.creationtab.CreationCoordinateBehavior">
+        app:layout_behavior="solstudios.app.moduls.creationtab.behaviors.CreationCoordinateBehavior">
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nestedScrollView"

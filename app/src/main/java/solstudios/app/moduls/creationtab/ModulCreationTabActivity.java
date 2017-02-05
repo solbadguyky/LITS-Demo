@@ -18,7 +18,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.orhanobut.logger.Logger;
 
 import solstudios.app.R;
 
@@ -206,7 +205,7 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
             ///Kiểm trả vị trí của creationbutton
             float offsetY = creationButton.getBottom();
 
-            Logger.d(offsetY);
+            //Logger.d(offsetY);
 
             if (mMap != null && hcmLatLng != null) {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(hcmLatLng));

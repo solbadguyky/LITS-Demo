@@ -246,7 +246,7 @@ public class DraggableLayout extends ViewGroup {
 
         @Override
         public void onViewDragStateChanged(int state) {
-            Logger.i(String.valueOf(state));
+            //Logger.i(String.valueOf(state));
             if (state == mDraggingState) { // no change
                 //Logger.i("This view no change");
                 countDownCallBack = false;
@@ -276,9 +276,7 @@ public class DraggableLayout extends ViewGroup {
             }
 
             mDraggingState = state;
-            super.
-
-                    onViewDragStateChanged(state);
+            super.onViewDragStateChanged(state);
         }
 
     }

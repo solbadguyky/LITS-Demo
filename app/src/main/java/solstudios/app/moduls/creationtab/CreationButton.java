@@ -13,7 +13,6 @@ import solstudios.app.R;
  * Created by SolbadguyKY on 31-Jan-17.
  */
 
-@CoordinatorLayout.DefaultBehavior(CreationTabChildBehavior.class)
 public class CreationButton extends FrameLayout {
 
     public enum ButtonState {
@@ -329,7 +328,7 @@ public class CreationButton extends FrameLayout {
 
         }
 
-        currentSelectedView.requestLayout();
+        //currentSelectedView.requestLayout();
         //Logger.d("animateSelectedTab| debug = %s", currentSelectedView.getTag());
     }
 
