@@ -1,7 +1,6 @@
 package solstudios.app.moduls.creationtab;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -9,8 +8,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.orhanobut.logger.Logger;
 
 import solstudios.app.R;
 import solstudios.app.utilities.Devices;
@@ -26,7 +23,11 @@ import static solstudios.app.moduls.creationtab.DraggableLayout.View_Position.To
 public class DraggableLayout extends ViewGroup {
 
     public enum View_Position {
-        Top, Bottom, Middle
+        ///Anchor
+        Top, Bottom, Middle,
+        ///
+        Bottom_Middle_0_1, Bottom_Middle_1_2,
+        Middle_Top_0_1, Middle_Top_1_2;
     }
 
     private Context mContext;
@@ -147,15 +148,15 @@ public class DraggableLayout extends ViewGroup {
         static final int COUNT_DOWN_MESSAGE = 69;
         private int mDraggingState;
         private boolean countDownCallBack = false;
-        Handler countDownHanlder;
-        Runnable countDownRunnable;
+        //Handler countDownHanlder;
+        //Runnable countDownRunnable;
 
         DragHelperCallback() {
             init();
         }
 
         void init() {
-            countDownHanlder = new Handler();
+            /*countDownHanlder = new Handler();
             countDownRunnable = new Runnable() {
                 @Override
                 public void run() {
@@ -170,7 +171,7 @@ public class DraggableLayout extends ViewGroup {
                         }
                     }
                 }
-            };
+            };*/
         }
 
         @Override
@@ -212,7 +213,7 @@ public class DraggableLayout extends ViewGroup {
                     if (yvel >= MINIMUM_VELOCIT_Y_MIDDLE) {
                         mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
                     } else {
-                        middlemize();
+                        //middlemize();
                     }
                     break;
                 case Bottom:
@@ -220,7 +221,7 @@ public class DraggableLayout extends ViewGroup {
                     if (yvel <= -MINIMUM_VELOCIT_Y_BOTTOM) {
                         mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
                     } else {
-                        minimize();
+                        //minimize();
                     }
                     break;
                 default:
@@ -266,13 +267,13 @@ public class DraggableLayout extends ViewGroup {
                 countDownCallBack = true;
                 ///Nếu như view đang ở trạng thái dragging, thi sẽ trigger một countdown timer,
                 // quá thời gian active sẽ trả view về vị trí cũ
-                if (countDownHanlder.hasMessages(COUNT_DOWN_MESSAGE)) {
+               /* if (countDownHanlder.hasMessages(COUNT_DOWN_MESSAGE)) {
                     countDownHanlder.removeCallbacks(countDownRunnable);
                     countDownHanlder.removeMessages(COUNT_DOWN_MESSAGE);
                 }
 
                 countDownHanlder.postDelayed(countDownRunnable, COUNT_DOWN);
-                countDownHanlder.sendEmptyMessage(COUNT_DOWN_MESSAGE);
+                countDownHanlder.sendEmptyMessage(COUNT_DOWN_MESSAGE);*/
             }
 
             mDraggingState = state;
@@ -510,7 +511,7 @@ public class DraggableLayout extends ViewGroup {
         if (creationButton != null) {
             if (mHeaderView.getTop() == 0) {
                 this.viewPositionState = Top;
-            } else if (mHeaderView.getTop() == creationButton.parentHeight - mHeaderView.getHeight()) {
+            } else if (mHeaderView.getTop() > 0 && mHeaderView.getTop() == creationButton.parentHeight - mHeaderView.getHeight()) {
                 this.viewPositionState = Bottom;
             } else if (mHeaderView.getTop() == getMiddlePosition()) {
                 this.viewPositionState = Middle;

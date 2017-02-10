@@ -28,4 +28,9 @@
     <declare-styleable name="CreationBehavior">
         <attr name="maxWidth" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="AnchorObject">
+        <attr name="anchorX" format="float"  />
+        <attr name="anchorY" format="float" />
+    </declare-styleable>
 </resources>

@@ -21,6 +21,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import solstudios.app.R;
 
+/**
+ * Modul creation tab dùng để hiển thị creation button và các gesture liên quan đến Creation Tab
+ * tại Maps Playground
+ */
 public class ModulCreationTabActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     //FrameLayout collapsingToolbarContent;

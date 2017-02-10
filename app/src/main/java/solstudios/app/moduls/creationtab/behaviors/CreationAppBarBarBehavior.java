@@ -6,6 +6,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
 import solstudios.app.R;
 import solstudios.app.moduls.creationtab.DraggableLayout;
 
@@ -57,8 +59,13 @@ public class CreationAppBarBarBehavior extends CoordinatorLayout.Behavior<AppBar
             if (viewHeight == 0) {
                 viewHeight = parent.getHeight();
             }
-            float distancePercent = calculateDistancePercentage(viewHeight, distance);
-            translateY(child, distancePercent);
+
+            //Logger.d(distance);
+
+            if (distance <= draggableLayout.getMiddlePosition()) {
+                float distancePercent = calculateDistancePercentage((int) (viewHeight - draggableLayout.getMiddlePosition()), distance);
+                translateY(child, distancePercent);
+            }
         }
         return true;
     }
