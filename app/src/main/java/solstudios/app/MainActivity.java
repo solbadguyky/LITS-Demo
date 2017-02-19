@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import solstudios.app.moduls.anchorpoint.LayoutAnchorActivity;
-import solstudios.app.moduls.creationtab.ModulCreationTabActivity;
+import solstudios.app.moduls.mapviews.MapViewsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void enterCreationModul() {
-        Intent intent = new Intent(this, ModulCreationTabActivity.class);
+        Intent intent = new Intent(this, MapViewsActivity.class);
         this.startActivity(intent);
     }
 }

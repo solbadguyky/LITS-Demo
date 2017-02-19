@@ -67,7 +67,7 @@ public class Devices {
         int height = displaymetrics.heightPixels;
         int width = displaymetrics.widthPixels;
 
-        new LogTask("Getting Screen Demension|w=" + width + ",h=" + height, TAB, LogTask.LOG_D);
+        //new LogTask("Getting Screen Demension|w=" + width + ",h=" + height, TAB, LogTask.LOG_D);
 
         if (getWidth)
             return width;
@@ -79,7 +79,7 @@ public class Devices {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        new LogTask("getSizeInDP|w=" + dpWidth + ",h=" + dpHeight, TAB, LogTask.LOG_D);
+        //new LogTask("getSizeInDP|w=" + dpWidth + ",h=" + dpHeight, TAB, LogTask.LOG_D);
 
         if (getWidth)
             return dpWidth;

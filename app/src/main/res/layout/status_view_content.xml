@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/md_white_1000">
+
+    <!--
+    Sử dụng thư viện AsymmetricGridView để hiển thị layout nhiều ảnh
+     -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/statusViewContent_ImageGirdView"
+        android:layout_margin="5dp"
+        android:gravity="left"
+        android:maxLines="3"
+        android:padding="@dimen/material_component_cards_primary_title_bottom_padding"
+        android:text="@string/lorem_short"
+        android:textColor="@color/md_black_1000" />
+
+    <com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView
+        android:id="@+id/statusViewContent_ImageGirdView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="3dp"
+        android:fadingEdge="none"
+        android:focusable="false"
+        android:gravity="center"
+        android:listSelector="#00000000"
+        android:minHeight="100dp"
+        tools:layout_height="300dp" />
+</RelativeLayout>

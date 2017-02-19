@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app_icon="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:minHeight="50dp"
+    android:minWidth="50dp"
+    tools:layout_height="120dp"
+    tools:layout_width="120dp">
+
+    <solstudios.app.moduls.mapviews.SquareImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:background="@color/material_grey_400" />
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center"
+        android:text="{gmd-account-circle}"
+        app_icon:iiv_color="@color/md_white_1000"
+        app_icon:iiv_icon="gmd-account-circle" />
+</FrameLayout>

@@ -11,9 +11,14 @@ import android.view.ViewGroup;
 
 import solstudios.app.R;
 import solstudios.app.utilities.Devices;
+import solstudios.app.utilities.Utils;
 
 import static solstudios.app.moduls.creationtab.DraggableLayout.View_Position.Bottom;
+import static solstudios.app.moduls.creationtab.DraggableLayout.View_Position.Bottom_Middle_0_1;
+import static solstudios.app.moduls.creationtab.DraggableLayout.View_Position.Bottom_Middle_1_2;
 import static solstudios.app.moduls.creationtab.DraggableLayout.View_Position.Middle;
+import static solstudios.app.moduls.creationtab.DraggableLayout.View_Position.Middle_Top_0_1;
+import static solstudios.app.moduls.creationtab.DraggableLayout.View_Position.Middle_Top_1_2;
 import static solstudios.app.moduls.creationtab.DraggableLayout.View_Position.Top;
 
 /**
@@ -25,8 +30,9 @@ public class DraggableLayout extends ViewGroup {
     public enum View_Position {
         ///Anchor
         Top, Bottom, Middle,
-        ///
+        ///Nằm trên và dưới nửa dưới
         Bottom_Middle_0_1, Bottom_Middle_1_2,
+        ///Nằm trên và dưới nửa trên
         Middle_Top_0_1, Middle_Top_1_2;
     }
 
@@ -39,12 +45,16 @@ public class DraggableLayout extends ViewGroup {
 
     private float mInitialMotionX;
     private float mInitialMotionY;
+    public static int backViewWidth = 0;
+    public static int parentWidth = 0, parentHeight = 0;
+    public static int oldChildWidth = 0, oldChildHeight = 0;
+    public static float middlePosition = 0;
 
     private int mDragRange;
     private int mTop;
     private float mDragOffset;
     private OnStateChange onStateChange;
-    private float middlePosition;
+
     private static final int INVALID_POINTER = -1;
     private static final float MINIMUM_VELOCIT_X = 200f;
     private static final float MINIMUM_VELOCIT_Y_MIDDLE = 1500f;
@@ -56,17 +66,26 @@ public class DraggableLayout extends ViewGroup {
     public DraggableLayout(Context context) {
         this(context, null);
         mContext = context;
+        init(context);
     }
 
     public DraggableLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         mContext = context;
+        init(context);
     }
+
+    void init(Context context) {
+        oldChildWidth = Devices.getDefaultDevice(context).getSize(true) / CreationGroupView.availableChilds();
+        oldChildHeight = Utils.getActionBarSize(context);
+        middlePosition = Devices.getDefaultDevice(context).getSize(false) / 2;
+    }
+
 
     @Override
     protected void onFinishInflate() {
         mHeaderView = findViewById(R.id.creationTab);
-        mDescView = findViewById(R.id.nestedScrollView);
+        mDescView = findViewById(R.id.creationScreen);
     }
 
     public DraggableLayout(Context context, AttributeSet attrs, int defStyle) {
@@ -85,6 +104,7 @@ public class DraggableLayout extends ViewGroup {
      * Thu nhỏ
      */
     public void minimize() {
+        //Logger.i("minimize");
         smoothSlideTo(Bottom);
     }
 
@@ -111,7 +131,7 @@ public class DraggableLayout extends ViewGroup {
                 break;
             case Middle:
                 ///Nếu creation tab ở trạng thái Quick Editor, khoảng cách di chuyển sẽ là vị trí In-Middle
-                slideOffset = getMiddlePosition();
+                slideOffset = middlePosition;
                 break;
 
         }
@@ -127,7 +147,7 @@ public class DraggableLayout extends ViewGroup {
                 setState(Bottom);
             } else if (view_position == Middle) {
                 if (onStateChange != null) {
-                    onStateChange.onMaximize();
+                    onStateChange.onMiddlemize();
                 }
 
                 setState(Middle);
@@ -206,27 +226,35 @@ public class DraggableLayout extends ViewGroup {
                 top += mDragRange;
             }
             //Logger.d("onViewReleased|debug: %f %f", xvel, yvel);
+            //  mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
             ///Nếu view_position đang ở vị trí In-Middle thì chỉ cho phép settle khi đạt đủ velocity.y
             switch (getViewPositionState()) {
+                case Top:
+                    //mDragHelper.settleCapturedViewAt(0, top);
+                    break;
+                case Middle_Top_0_1:
+                    //mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
+                    smoothSlideTo(Top);
+                    break;
+                case Middle_Top_1_2:
+                    smoothSlideTo(Middle);
+                    break;
+                //mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
+                case Bottom_Middle_0_1:
+                    smoothSlideTo(Middle);
+                    break;
                 case Middle:
-                    //Logger.i("In-Middle settling state");
-                    if (yvel >= MINIMUM_VELOCIT_Y_MIDDLE) {
-                        mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
-                    } else {
-                        //middlemize();
-                    }
+                    //mDragHelper.settleCapturedViewAt(0, top);
+                case Bottom_Middle_1_2:
+                    smoothSlideTo(Bottom);
                     break;
                 case Bottom:
-                    //Logger.i("Bottom settling state");
-                    if (yvel <= -MINIMUM_VELOCIT_Y_BOTTOM) {
-                        mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
-                    } else {
-                        //minimize();
-                    }
+                    //mDragHelper.settleCapturedViewAt(0, top);
                     break;
                 default:
                     //Logger.i("Fall to default settling state");
-                    mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
+                    //mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
+                    //mDragHelper.settleCapturedViewAt(0, top);
                     break;
             }
         }
@@ -292,6 +320,7 @@ public class DraggableLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+
         final int action = MotionEventCompat.getActionMasked(ev);
 
         if ((action != MotionEvent.ACTION_DOWN)) {
@@ -312,6 +341,21 @@ public class DraggableLayout extends ViewGroup {
                 mInitialMotionX = x;
                 mInitialMotionY = y;
                 interceptTap = mDragHelper.isViewUnder(mHeaderView, (int) x, (int) y);
+                if (getViewPositionState() == Middle
+                        || getViewPositionState() == Bottom_Middle_0_1
+                        || getViewPositionState() == Middle_Top_1_2) {
+                    if (mHeaderView.findViewById(R.id.creationTab_editorView) != null) {
+                        float exactlyPositionY = getCreationBasePostionOnscreen(x, y)[1];
+                        if (exactlyPositionY > 0) {
+                            interceptTap = !mDragHelper.isViewUnder(mHeaderView.findViewById(R.id.creationTab_editorView), (int) x, (int) exactlyPositionY);
+                        }
+
+                        //Logger.d(mDragHelper.isViewUnder(mHeaderView.findViewById(R.id.creationTab_editorView), (int) x, (int) y));
+                        //Logger.d(mDragHelper.isViewUnder(mHeaderView.findViewById(R.id.creationTab_editorViewHolder), (int) x, (int) y));
+                    }
+
+                }
+
                 break;
             }
 
@@ -350,13 +394,7 @@ public class DraggableLayout extends ViewGroup {
                 final float dy = y - mInitialMotionY;
                 final int slop = mDragHelper.getTouchSlop();
                 if (dx * dx + dy * dy < slop * slop && isHeaderViewUnder) {
-                    if (mDragOffset == 0) {
-                        //smoothSlideTo(1f);
-                    } else {
-                        //smoothSlideTo(0f);
-                        ///Kiểm tra vị trí click có thuộc view nào không
-                        checkSelectedView(x, y);
-                    }
+                    checkSelectedView(x, y);
                 }
                 break;
             }
@@ -389,13 +427,39 @@ public class DraggableLayout extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         measureChildren(widthMeasureSpec, heightMeasureSpec);
+
+        ///Nếu chưa có parent.size thì set tại đây
+        if (parentHeight == 0) {
+            parentHeight = MeasureSpec.getSize(heightMeasureSpec);
+        }
+
+        if (parentWidth == 0) {
+            parentWidth = MeasureSpec.getSize(widthMeasureSpec);
+        }
 
         int maxWidth = MeasureSpec.getSize(widthMeasureSpec);
         int maxHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, 0),
+        super.setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, 0),
                 resolveSizeAndState(maxHeight, heightMeasureSpec, 0));
+
+    }
+
+    @Override
+    protected void measureChild(View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
+        super.measureChild(child, parentWidthMeasureSpec, parentHeightMeasureSpec);
+    }
+
+    @Override
+    protected void measureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+        super.measureChildren(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
+    protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+        super.measureChildWithMargins(child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
     }
 
     @Override
@@ -404,6 +468,15 @@ public class DraggableLayout extends ViewGroup {
 
         mHeaderView.layout(0, mTop, r, mTop + mHeaderView.getMeasuredHeight());
         mDescView.layout(0, mTop + mHeaderView.getMeasuredHeight(), r, mTop + b);
+
+        ///Set actionView size tại đây
+        if (findViewById(R.id.creationTab_actionView) != null) {
+            //Logger.d(findViewById(R.id.creationTab_actionView));
+            if (backViewWidth == 0) {
+                backViewWidth = MeasureSpec.getSize(findViewById(R.id.creationTab_actionView).getMeasuredWidth());
+            }
+        }
+
     }
 
     public interface OnStateChange {
@@ -429,14 +502,6 @@ public class DraggableLayout extends ViewGroup {
         return this.mHeaderView;
     }
 
-    public float getMiddlePosition() {
-        if (this.middlePosition == 0) {
-            return Devices.getDefaultDevice(mContext).getSize(false) / 2;
-        } else {
-            return this.middlePosition;
-        }
-    }
-
     /**
      * Dựa vào vị trí click trên thanh creation để xác định view được click vào
      *
@@ -445,52 +510,72 @@ public class DraggableLayout extends ViewGroup {
      * @return
      */
     View checkSelectedView(float x, float y) {
-        CreationButton creationButton = castToCreationButtonView();
-        if (creationButton != null) {
-            ///exactlyPosY là vị trí click trên hệ trục gốc lấy từ CreationButton
+        //Logger.d("CheckSeletedView|debug: %f %f", x, y);
+        CreationGroupView creationGroupView = castToCreationButtonView();
+        if (creationGroupView != null) {
+            ///exactlyPosY là vị trí click trên hệ trục gốc lấy từ CreationButton (0,0)
+
+            float[] exactlyLocation = getCreationBasePostionOnscreen(x, y);
             float exactlyPosY = 0;
-            if (getViewPositionState() == Bottom) {
-                ///Nếu creation đang ở Bottom, thì Y của CreationButton sẽ bằng
-                // (parent.height - creationBar.height)
-                exactlyPosY = y - (creationButton.parentHeight - mHeaderView.getHeight());
-            } else if (getViewPositionState() == Middle) {
-                exactlyPosY = y - (creationButton.parentHeight - getMiddlePosition());
+            if (exactlyLocation[1] > 0) {
+                exactlyPosY = exactlyLocation[1];
             } else {
-                exactlyPosY = -1;
-                return null;
+                exactlyPosY = y;
             }
 
-            //Logger.d("checkSelectedView|debug: %f %f", x, exactlyPosY);
-            //Logger.d("checkSelectedView|debug: " + getViewPositionState());
+            //exactlyPosY = y - (creationGroupView.parentHeight - mHeaderView.getTop());
 
-            View firstView = creationButton.getViewAt(1);
-            View secondView = creationButton.getViewAt(2);
-            View thirdView = creationButton.getViewAt(3);
 
-            //Logger.d(firstView.getWidth() + secondView.getWidth());
+            View firstView = creationGroupView.getViewAt(1);
+            View secondView = creationGroupView.getViewAt(2);
+            View thirdView = creationGroupView.getViewAt(3);
+            View editorView = findViewById(R.id.creationTab_editorView);
+            View editorViewHolder = findViewById(R.id.creationTab_editorViewHolder);
+            View actionView = findViewById(R.id.creationTab_actionView);
+            //Logger.d("checkSelectedView|debug:" + mDragHelper.isViewUnder(actionView, (int) x, (int) exactlyPosY));
 
-            if (exactlyPosY < creationButton.getHeight()) {
-                //Logger.d("checkSelectedView|debug: %f %f", x, exactlyPosY);
-                ///Khi click vào creation button thì sẽ process chức năng filter
-                if (x < firstView.getWidth()) {
-                    firstView.performClick();
-                } else if (x < firstView.getWidth() + secondView.getWidth()) {
-                    secondView.performClick();
+            ///Nếu creation tab đang ở Top thì sẽ kểm tra ActionView
+            if (getViewPositionState() == Top) {
+                if (mDragHelper.isViewUnder(actionView, (int) x, (int) exactlyPosY)) {
+                    minimize();
+                    return actionView;
                 } else {
-                    thirdView.performClick();
+                    ///Không process thao tac khác
+                    return null;
                 }
-            } else {
-                ///Click vào khu vực nhập liệu sẽ chuyển sang dạng In-Middle
-                middlemize();
+
             }
+            if (mDragHelper.isViewUnder(firstView, (int) x, (int) exactlyPosY)) {
+                //Logger.i("A");
+
+                firstView.performClick();
+            } else if (mDragHelper.isViewUnder(secondView, (int) x, (int) exactlyPosY)) {
+                //Logger.i("B");
+
+                secondView.performClick();
+            } else if (mDragHelper.isViewUnder(thirdView, (int) x, (int) exactlyPosY)) {
+                //Logger.i("C");
+
+                thirdView.performClick();
+            } else if (mDragHelper.isViewUnder(editorView, (int) x, (int) exactlyPosY)
+                    || mDragHelper.isViewUnder(editorViewHolder, (int) x, (int) exactlyPosY)) {
+                //Logger.d("checkSelectedView|debug: " + getViewPositionState());
+                if (getViewPositionState() == Middle || getViewPositionState() == Middle_Top_1_2) {
+                    ///Có thể bật bàn phím ảo tại đây
+                } else {
+                    middlemize();
+                }
+
+            }
+
         }
         //Logger.d(creationButton);
         return null;
     }
 
-    CreationButton castToCreationButtonView() {
+    CreationGroupView castToCreationButtonView() {
         if (mHeaderView.findViewById(R.id.creationTab_actionFirstView) != null) {
-            return (CreationButton) mHeaderView.findViewById(R.id.creationTab_actionFirstView);
+            return (CreationGroupView) mHeaderView.findViewById(R.id.creationTab_actionFirstView);
         } else return null;
     }
 
@@ -498,8 +583,15 @@ public class DraggableLayout extends ViewGroup {
         this.viewPositionState = state;
     }
 
+    /**
+     * Trả về vị trí hiện tại của thanh creation trên màn hình
+     *
+     * @return View_Position
+     */
     public View_Position getViewPositionState() {
         doubleCheckForSure();
+        //Logger.d("getViewPositionState|viewPositionState" + viewPositionState);
+        //Logger.d(getMiddlePosition() + mHeaderView.getHeight() / 2);
         return this.viewPositionState;
     }
 
@@ -507,25 +599,41 @@ public class DraggableLayout extends ViewGroup {
      * Kiểm tra vị trí của view trước khi trả về kết quả
      */
     void doubleCheckForSure() {
-        CreationButton creationButton = castToCreationButtonView();
-        if (creationButton != null) {
+        CreationGroupView creationGroupView = castToCreationButtonView();
+
+        if (creationGroupView != null) {
+            /// Khoảng cách nữa dưới (dưới điểm In-Middle) sẽ trừ
+            ///đi chiều cao của CreationButton
+            float deltaMiddleBottom = parentHeight - middlePosition - mHeaderView.getHeight();
             if (mHeaderView.getTop() == 0) {
                 this.viewPositionState = Top;
-            } else if (mHeaderView.getTop() > 0 && mHeaderView.getTop() == creationButton.parentHeight - mHeaderView.getHeight()) {
+            } else if (mHeaderView.getTop() > 0 && mHeaderView.getTop() <= middlePosition / 2) {
+                this.viewPositionState = Middle_Top_0_1;
+            } else if (mHeaderView.getTop() > middlePosition / 2 && mHeaderView.getTop() <= middlePosition) {
+                this.viewPositionState = Middle_Top_1_2;
+            } else if (mHeaderView.getTop() > middlePosition
+                    && mHeaderView.getTop() <= middlePosition + deltaMiddleBottom / 2)
+            //&& mHeaderView.getTop() == creationButton.parentHeight - mHeaderView.getHeight()) {
+            {
+                this.viewPositionState = Bottom_Middle_0_1;
+
+            } else if (mHeaderView.getTop() > middlePosition + deltaMiddleBottom / 2 && mHeaderView.getTop() < middlePosition + deltaMiddleBottom) {
+                this.viewPositionState = Bottom_Middle_1_2;
+            } else if (mHeaderView.getTop() == middlePosition + deltaMiddleBottom) {
                 this.viewPositionState = Bottom;
-            } else if (mHeaderView.getTop() == getMiddlePosition()) {
+            } else if (mHeaderView.getTop() == middlePosition) {
                 this.viewPositionState = Middle;
             }
         }
     }
 
     View_Position getNearestPosition() {
-        CreationButton creationButton = castToCreationButtonView();
-        if (creationButton != null) {
-            if (mHeaderView.getTop() < getMiddlePosition()) {
+        CreationGroupView creationGroupView = castToCreationButtonView();
+        if (creationGroupView != null) {
+            if (mHeaderView.getTop() < middlePosition) {
                 return Top;
-            } else if (mHeaderView.getTop() >= getMiddlePosition()
-                    && mHeaderView.getTop() < creationButton.parentHeight - mHeaderView.getHeight()) {
+            } else if (mHeaderView.getTop() >= middlePosition
+                    && mHeaderView.getTop() < parentHeight - mHeaderView.getHeight()) {
                 return Middle;
             } else {
                 return Bottom;
@@ -534,4 +642,22 @@ public class DraggableLayout extends ViewGroup {
             return null;
         }
     }
+
+    float[] getCreationBasePostionOnscreen(float x, float y) {
+        float exactlyPosX = 0, exactlyPosY = 0;
+        CreationGroupView creationGroupView = castToCreationButtonView();
+
+        if (creationGroupView != null) {
+            if (getViewPositionState() == Middle
+                    || getViewPositionState() == Middle_Top_1_2
+                    || getViewPositionState() == Bottom_Middle_0_1
+                    ) {
+                exactlyPosY = y - (parentHeight - mHeaderView.getTop());
+            } else if (getViewPositionState() == Bottom || getViewPositionState() == Bottom_Middle_1_2) {
+                exactlyPosY = y - (mHeaderView.getTop());
+            }
+        }
+        return new float[]{exactlyPosX, exactlyPosY};
+    }
+
 }

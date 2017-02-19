@@ -12,6 +12,9 @@ import solstudios.app.utilities.Devices;
 import static solstudios.app.moduls.anchorpoint.LayoutAnchorActivity.SNAP_DISTANCE;
 
 /**
+ * Điểm neo chính trên màn hình, các anchor object sẽ hiển thị dựa trên vị trí và
+ * mức độ ưu tiên đối với CircleAxisView.
+ * Những CircleAxisView không thể tương tác với nhau
  * Created by SolbadguyKY on 05-Feb-17.
  */
 
@@ -28,6 +31,10 @@ public class CircleAxisView extends View {
 
     public CircleAxisView(Context context) {
         super(context);
+        init();
+    }
+
+    void init() {
         circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         circlePaint.setStyle(Paint.Style.FILL);
         circlePaint.setColor(Color.RED);
@@ -86,8 +93,6 @@ public class CircleAxisView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //canvas.drawLine(10, 20, 30, 40, paint);
-        //canvas.drawLine(20, 10, 50, 20, paint);
 
         if (this.isTriggered) {
             canvas.drawPath(mPath, circlePaint);

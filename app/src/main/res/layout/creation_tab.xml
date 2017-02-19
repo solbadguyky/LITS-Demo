@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize">
+    android:layout_height="wrap_content"
+    tools:context="solstudios.app.moduls.creationtab.ModulCreationTabActivity">
 
     <!-- Menu/Back/Action button -->
     <FrameLayout
@@ -15,16 +16,33 @@
             android:layout_width="100dp"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/md_blue_grey_50" />
-
     </FrameLayout>
 
     <!--Creation Buttons-->
-    <solstudios.app.moduls.creationtab.CreationButton
+    <solstudios.app.moduls.creationtab.CreationGroupView
         android:id="@+id/creationTab_actionFirstView"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:minWidth="100dp"
-        app:layout_behavior="solstudios.app.moduls.creationtab.behaviors.CreationTabChildBehavior" />
+        android:layout_height="?attr/actionBarSize" />
 
+
+    <FrameLayout
+        android:id="@+id/creationTab_editorView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/md_deep_orange_50"
+        android:tag="editorView">
+
+        <include layout="@layout/creation_editor_view" />
+    </FrameLayout>
+
+    <!-- Editor section -->
+    <View
+        android:id="@+id/creationTab_editorViewHolder"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/md_indigo_700"
+        android:tag="editorViewHolder" />
 
 </android.support.design.widget.CoordinatorLayout>

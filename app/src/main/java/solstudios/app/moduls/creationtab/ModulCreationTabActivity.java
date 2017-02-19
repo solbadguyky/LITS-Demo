@@ -3,8 +3,9 @@ package solstudios.app.moduls.creationtab;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import solstudios.app.R;
+import solstudios.app.moduls.creationtab.behaviors.CreationCoordinateBehavior;
 
 /**
  * Modul creation tab dùng để hiển thị creation button và các gesture liên quan đến Creation Tab
@@ -31,14 +33,15 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
     //DraggableView draggablePanel;
     CoordinatorLayout rootView;
     AppBarLayout appBarLayout;
+    Toolbar toolbar;
     DraggableLayout draggableLayout;
     TextView contentView;
     FrameLayout creationBar;
-    NestedScrollView nestedScrollView;
+    FrameLayout creationScreen;
     GoogleMap mMap;
 
     DisplayMetrics displayMetrics;
-    CreationButton creationButton;
+    CreationGroupView creationGroupView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +67,13 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
     void initView() {
         rootView = (CoordinatorLayout) findViewById(R.id.activity_modul_creation_tab);
         appBarLayout = (AppBarLayout) findViewById(R.id.appBar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         draggableLayout = (DraggableLayout) findViewById(R.id.draggableLayout);
         creationBar = (FrameLayout) findViewById(R.id.creationTab);
-        contentView = (TextView) findViewById(R.id.contentView);
-        nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
+        //contentView = (TextView) findViewById(R.id.contentView);
+        creationScreen = (FrameLayout) findViewById(R.id.creationScreen);
 
-        creationButton = (CreationButton) creationBar.findViewById(R.id.creationTab_actionFirstView);
+        creationGroupView = (CreationGroupView) creationBar.findViewById(R.id.creationTab_actionFirstView);
 
         rootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -81,19 +85,43 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
                                        int oldTop,
                                        int oldRight,
                                        int oldBottom) {
-                creationButton.parentHeight = bottom;
-                draggableLayout.setMiddlePosition(oldBottom / 2);
-                creationButton.parentMiddle = oldBottom / 2;
+                //Logger.d(bottom);
+                DraggableLayout.parentHeight = bottom;
+
+                ///Tính toản vị trí middle Position
+                draggableLayout.setMiddlePosition(middlePosition(bottom));
+                DraggableLayout.middlePosition = middlePosition(bottom);
+                //creationGroupView.minEditorHeight = 54;
+            }
+
+            int middlePosition(int bottom) {
+                AppCompatEditText appCompatEditText = (AppCompatEditText) draggableLayout.findViewById(R.id.creationQuickEditorField);
+                if (appCompatEditText != null) {
+                    appCompatEditText.setTextSize(20);
+                    appCompatEditText.setText("Hello, world");
+                    appCompatEditText.measure(0, 0);
+                    int height = appCompatEditText.getMeasuredHeight();
+
+                    int middlePos = bottom - height - draggableLayout.getmHeaderView().getHeight();
+
+                    return middlePos;
+                }
+
+                return 0;
             }
         });
     }
 
     void setupView() {
+        CreationCoordinateBehavior creationCoordinateBehavior = new CreationCoordinateBehavior(this);
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        params.setBehavior(creationCoordinateBehavior);
 
-        //collapsingToolbarContent.setMinimumHeight(displayMetrics.heightPixels - toolbarView.getHeight());
-        /*CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) nestedScrollView.getLayoutParams();
-        params.topMargin = displayMetrics.heightPixels - creationBar.getHeight();
-        nestedScrollView.setLayoutParams(params);*/
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("LITS");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -104,9 +132,9 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
             public void onMinimize() {
                 if (creationBar.findViewById(R.id.creationTab_actionFirstView) != null) {
                     //creationButton.animateSelectedTab();
-                    creationButton.currentPosition = CreationButton.PositionState.Bottom;
+                    creationGroupView.currentPosition = CreationGroupView.PositionState.Bottom;
                     // creationButton.onReset(true);
-                    creationButton.resetChildViews();
+                    creationGroupView.resetChildViews();
 
                     /*if (!creationButton.isInLayout()) {
                         creationButton.requestLayout();
@@ -120,7 +148,7 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
             public void onMaximize() {
                 if (creationBar.findViewById(R.id.creationTab_actionFirstView) != null) {
                     //creationButton.animateSelectedTab();
-                    creationButton.currentPosition = CreationButton.PositionState.Top;
+                    creationGroupView.currentPosition = CreationGroupView.PositionState.Top;
                     //creationButton.requestLayout();
 
                 }
@@ -128,7 +156,7 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
 
             @Override
             public void onMiddlemize() {
-
+                creationGroupView.currentPosition = CreationGroupView.PositionState.Midle;
             }
 
             @Override
@@ -136,14 +164,14 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
                 if (creationBar.findViewById(R.id.creationTab_actionFirstView) != null) {
 
                     ///Kiểm trả vị trí của creationbutton
-                    float cy = creationButton.getBottom();
+                    float cy = creationGroupView.getBottom();
                     float dy = rootView.getHeight() - creationBar.getBottom();
                     //Logger.d(cy);
-                    if (dy == 0 || dy <= draggableLayout.getMiddlePosition()) {
-                        creationButton.onReset(true);
-                        creationButton.resetChildViews();
+                    if (dy == 0 || dy <= DraggableLayout.middlePosition) {
+                        creationGroupView.onReset(true);
+                        creationGroupView.resetChildViews();
                     } else {
-                        creationButton.onReset(false);
+                        creationGroupView.onReset(false);
                     }
 
 
@@ -151,36 +179,36 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
             }
         });
 
-        creationButton.setButtonStateChangeListener(new CreationButton.ButtonStateChange() {
+        creationGroupView.setButtonStateChangeListener(new CreationGroupView.ButtonStateChange() {
             @Override
-            public void onChanged(CreationButton.ButtonState buttonState) {
+            public void onChanged(CreationGroupView.ButtonState buttonState) {
                 ///Dịch chuyễn map camera đến user-location
                 movingCameraToCeleb();
 
                 switch (buttonState) {
                     case First:
-                        draggableLayout.findViewById(R.id.creationTab_Editor)
+                        draggableLayout.findViewById(R.id.creationTab_editorViewHolder)
                                 .setBackgroundColor(getResources().getColor(R.color.md_amber_A700));
                         break;
                     case Second:
-                        draggableLayout.findViewById(R.id.creationTab_Editor)
+                        draggableLayout.findViewById(R.id.creationTab_editorViewHolder)
                                 .setBackgroundColor(getResources().getColor(R.color.md_red_800));
                         break;
                     case Third:
-                        draggableLayout.findViewById(R.id.creationTab_Editor)
+                        draggableLayout.findViewById(R.id.creationTab_editorViewHolder)
                                 .setBackgroundColor(getResources().getColor(R.color.md_brown_600));
                         break;
                 }
             }
 
             @Override
-            public void onClicked(CreationButton.ButtonState buttonState) {
+            public void onClicked(CreationGroupView.ButtonState buttonState) {
                 //Logger.d(buttonState);
-                creationButton.setButtonState(buttonState);
+                creationGroupView.setButtonState(buttonState);
             }
         });
 
-        creationButton.setButtonState(CreationButton.ButtonState.First);
+        creationGroupView.setButtonState(CreationGroupView.ButtonState.First);
 
     }
 
@@ -207,7 +235,7 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
         if (creationBar.findViewById(R.id.creationTab_actionFirstView) != null) {
 
             ///Kiểm trả vị trí của creationbutton
-            float offsetY = creationButton.getBottom();
+            float offsetY = creationGroupView.getBottom();
 
             //Logger.d(offsetY);
 

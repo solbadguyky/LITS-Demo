@@ -13,44 +13,24 @@
         android:layout_height="match_parent"
         tools:context="com.kodelabs.boilerplate.presentation.ui.activities.MapsActivity" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/seekBar"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/material_component_cards_left_and_right_padding"
+        android:text="Reset View" />
 
-    <TextView
-        android:id="@+id/mapsStatus_MainStatus"
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/seekBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/md_black_1000"
-        android:paddingRight="5dp"
-        android:text="Main Status......"
-        android:textColor="@color/md_white_1000" />
-
-    <android.support.v7.widget.AppCompatSeekBar
-        android:id="@+id/mapsStatus_SeekBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/mapsStatus_MainStatus"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="68dp"
+        android:layout_alignParentStart="true"
+        android:layout_margin="@dimen/material_component_cards_left_and_right_padding"
         android:max="45" />
 
-    <android.support.v7.widget.AppCompatSeekBar
-        android:id="@+id/mapsStatus_SeekBar2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/mapsStatus_SeekBar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="5dp" />
-
-    <ToggleButton
-        android:id="@+id/mapsStatus_ToggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/mapsStatus_SeekBar2"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="15dp"
-        android:text="Up / Down" />
 </RelativeLayout>
 
