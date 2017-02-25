@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import solstudios.app.R;
 import solstudios.app.moduls.mapviews.DefaultMapAsymmetricGridViewAdapter;
+import solstudios.app.moduls.mapviews.MapData.MapItem;
 import solstudios.app.moduls.mapviews.MapImageAsymmetricGridViewItem;
 import solstudios.app.moduls.mapviews.MapPool.Interfaces.I_MarkerAxis;
 
@@ -51,6 +52,11 @@ public class StatusView extends AbsMapView implements I_MarkerAxis {
     }
 
     @Override
+    public void setMarkerLocation(LatLng latLng) {
+
+    }
+
+    @Override
     public void setLocationWithLayout(float x, float y) {
         setLocation(x, y);
         layoutParams(x, y);
@@ -63,6 +69,11 @@ public class StatusView extends AbsMapView implements I_MarkerAxis {
     }
 
     @Override
+    public void setMapItem(MapItem mapItem) {
+
+    }
+
+
     public void setLocation(GoogleMap mMap) {
         if (mMarkerOption != null) {
             Projection projection = mMap.getProjection();
@@ -75,13 +86,20 @@ public class StatusView extends AbsMapView implements I_MarkerAxis {
         }
     }
 
-    @Override
+
     public boolean isInitialized() {
         return this.isInitialized;
     }
 
+
+    public void clearMarkerOption() {
+
+    }
+
     @Override
     public void initializePoolObject() {
+        setVisibility(VISIBLE);
+
         isInitialized = true;
 
         AsymmetricGridView asymmetricGridView = (AsymmetricGridView) findViewById(R.id.statusViewContent_ImageGirdView);
@@ -104,7 +122,7 @@ public class StatusView extends AbsMapView implements I_MarkerAxis {
 
     @Override
     public void finalizePoolObject() {
-
+        setVisibility(GONE);
     }
 
     public void layoutParams(float x, float y) {

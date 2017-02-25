@@ -14,40 +14,30 @@ public interface I_PoolObjectFactory {
      * @param classView Loại MapView muốn tạo
      * @return MapView ở dạng cơ bản nhất (chưa có dữ liệu)
      */
-    I_MarkerAxis createPoolObject(AbsMapView.Class classView);
+    I_Poolable createPoolObject(AbsMapView.Class classView);
 
     /**
-     * Nếu một view được tạo ra, thì sẽ thêm nó vào stack, nếu nó được lấy ra từ recyclePool thì
+     * Nếu một view được tạo ra, thì sẽ thêm nó vào stack,
+     * nếu nó được lấy ra từ recyclePool thì
      * vẫn thêm vào danh sách này luôn
      *
      * @param objectPool
      */
-    void increaseStack(I_MarkerAxis objectPool);
-
-    /**
-     * Xóa một object khỏi stack
-     */
-    I_MarkerAxis decreaseStack();
-
-    /**
-     * Xóa một view xác định khỏi stack
-     */
-    void decreaseStack(I_MarkerAxis iMarkerAxis);
-
+    void increaseStack(I_Poolable objectPool);
 
     /**
      * Kiểm tra trong pool có MapView nào đang đợi tái chế hay không
      *
      * @return view được lấy ra để sử dụng hoặc null nếu recycled-stack không còn view nào
      */
-    I_MarkerAxis getObjectFromPool();
+    I_Poolable getFreeObjectFromPool();
 
-    Stack<I_MarkerAxis> getStack();
+    Stack<I_Poolable> getStack();
 
     /**
      * Đưa một I_MarkerAxis vào reycle-pool để đợi tái sử dụng
      *
      * @param iMarkerAxis cần được đưa vào pool
      */
-    void pushObjectToRecyclePool(I_MarkerAxis iMarkerAxis);
+    void pushObjectToRecyclePool(I_Poolable iMarkerAxis);
 }

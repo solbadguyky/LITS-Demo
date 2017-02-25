@@ -1,8 +1,8 @@
 package solstudios.app.moduls.mapviews.MapPool.Interfaces;
 
 /**
- * I_Poolable là interface dùng để quản lí việc tạo đối tượng ở mức thấp nhất, chưa
- * phân biệt loại view hay thuộc tính
+ * I_Poolable để lấy một mapview, khởi tạo trước khi gắn nó vào một đối tượng trên bản đồ thông qua
+ * I_MarkerAxis
  */
 public interface I_Poolable {
     /**

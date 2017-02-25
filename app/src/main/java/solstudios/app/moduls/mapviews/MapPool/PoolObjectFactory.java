@@ -4,23 +4,28 @@ import android.content.Context;
 
 import com.orhanobut.logger.Logger;
 
-import java.util.EmptyStackException;
 import java.util.Stack;
 
 import solstudios.app.moduls.anchorpoint.AbsMapView;
 import solstudios.app.moduls.anchorpoint.MarkerAxisView;
 import solstudios.app.moduls.anchorpoint.StatusView;
-import solstudios.app.moduls.mapviews.MapPool.Interfaces.I_MarkerAxis;
 import solstudios.app.moduls.mapviews.MapPool.Interfaces.I_PoolObjectFactory;
+import solstudios.app.moduls.mapviews.MapPool.Interfaces.I_Poolable;
 
 /**
  * PoolObjectFactory dùng để tạo ra các MapView
  * Nếu một Mapview đang được sử dụng, nó sẽ nằm trong object pool
  * Khi không còn sử dụng nữa, nó sẽ được đưa vào objectRecycleList đợi tái sử dụng
+ * <p>
+ * Có 2 danh sách được factory lưu trữ, một danh sách luôn chứa các I_Poolable đã được khởi tạo
  */
 public class PoolObjectFactory implements I_PoolObjectFactory {
     private Context mContext;
-    private Stack<I_MarkerAxis> objectPoolList, objectRecycleList;
+    private Stack<I_Poolable> objectPoolList ///Những object nào đã được khởi tạo thì sẽ nằm trong bộ counter vĩnh viễn
+            ///tránh trường hợp không kiểm soát được số lượng view tạo ra
+            , objectRecycleList ///Những object nào có thể tái chế thì sẽ được đưa vào đây, sau khi
+            // tái chế sẽ xóa khỏi danh sách chờ tái chế
+            ;
 
     PoolObjectFactory(Context context) {
         this.mContext = context;
@@ -30,9 +35,9 @@ public class PoolObjectFactory implements I_PoolObjectFactory {
 
 
     @Override
-    public I_MarkerAxis createPoolObject(AbsMapView.Class classView) {
+    public synchronized I_Poolable createPoolObject(AbsMapView.Class classView) {
         //Logger.d("createPoolObject");
-        I_MarkerAxis i_absMapView;
+        I_Poolable i_absMapView;
 
         switch (classView) {
             case Status:
@@ -52,7 +57,7 @@ public class PoolObjectFactory implements I_PoolObjectFactory {
     }
 
     @Override
-    public void increaseStack(I_MarkerAxis objectPool) {
+    public synchronized void increaseStack(I_Poolable objectPool) {
         Logger.d(objectPoolList.size());
         if (!objectPoolList.contains(objectPool)) {
             objectPoolList.add(objectPool);
@@ -60,20 +65,15 @@ public class PoolObjectFactory implements I_PoolObjectFactory {
 
     }
 
-
     @Override
-    public I_MarkerAxis decreaseStack() throws EmptyStackException {
-        return objectPoolList.pop();
+    public I_Poolable getFreeObjectFromPool() {
+        return null;
     }
 
-    @Override
-    public void decreaseStack(I_MarkerAxis iMarkerAxis) {
-        objectPoolList.remove(iMarkerAxis);
-    }
 
-    @Override
-    public I_MarkerAxis getObjectFromPool() {
-        Logger.d(objectRecycleList.size());
+    I_Poolable getObjectFromPool() {
+        Logger.d("getObjectFromPool|size:" + objectRecycleList.size());
+        //Logger.d("getObjectFromPool|static.size:" + objectPoolList.size());
         if (objectRecycleList.size() > 0) {
             return objectRecycleList.pop();
         }
@@ -81,13 +81,23 @@ public class PoolObjectFactory implements I_PoolObjectFactory {
     }
 
     @Override
-    public Stack<I_MarkerAxis> getStack() {
+    public Stack<I_Poolable> getStack() {
         return this.objectPoolList;
     }
 
     @Override
-    public void pushObjectToRecyclePool(I_MarkerAxis iMarkerAxis) {
-        objectRecycleList.push(iMarkerAxis);
+    public void pushObjectToRecyclePool(I_Poolable iMarkerAxis) {
+        if (iMarkerAxis != null) {
+            //Logger.d("pushObjectToRecyclePool|i:" + iMarkerAxis);
+            iMarkerAxis.finalizePoolObject();
+            objectRecycleList.add(iMarkerAxis);
+            Logger.d("pushObjectToRecyclePool|size:" + objectRecycleList.size());
+        }
+
     }
 
+
+    int getCreatedObjectSize() {
+        return this.objectPoolList.size();
+    }
 }

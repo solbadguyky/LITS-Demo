@@ -5,31 +5,36 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /***
  * Interface dùng để quản lí danh sách các I_Marker được tạo ra
  */
-public interface I_ObjectPool<I_MarkerAxis extends I_Poolable> {
+public interface I_ObjectPool<I_Poolable> {
 
     /**
-     * Mội I_MarkerAxis được tạo ra sẽ gắn liền với 1 marker tại vị trí hiển thị
-     * Nếu như marker đó không còn nằm trong phạm vi hiển thị thì sẽ đưa I_MarkerAxis vào trong
-     * Pool để chờ re-cycle
+     * Lấy một ObjectPool hoặc khởi tạo một object pool
      *
      * @param classView
+     * @return
+     */
+    I_Poolable adquirePoolObject(solstudios.app.moduls.anchorpoint.AbsMapView.Class classView);
+
+
+    /**
+     * Kiểm tra trong pool có object nào bị "bỏ quên" hay không, nếu có sẽ đưa vào hồ
+     */
+    void freePoolObject(MarkerOptions markerOptions, I_Poolable i_poolable);
+
+    /**
+     * Kiểm tra xem marker options đã được set hay chưa, nếu chưa thì sẽ đưa vào tính toán
+     *
      * @param markerOptions
      * @return
      */
-    I_MarkerAxis adquirePoolObject(solstudios.app.moduls.anchorpoint.AbsMapView.Class classView,
-                                   MarkerOptions markerOptions);
-
+    boolean findMarkerOptionHasBeenSet(MarkerOptions markerOptions);
 
     /**
-     * Đưa I_MarkerAxis vào trong pool để đợi tái sử dụng / Recycle
+     * Khi mộit marker options được gán vào một I_Poolable, I_poolable sẽ chuyển thành I_MarkerAxis
+     * kể từ đây, công việc tính toán của I_MarkerAxis sẽ hoàn toàn dựa vào Marker Options này
      *
-     * @param markerOptions
+     * @param markerObject
+     * @param i_poolable
      */
-    I_MarkerAxis freePoolObject(MarkerOptions markerOptions);
-
-    I_MarkerAxis findMarerAxis(MarkerOptions markerOptions);
-
-    int getMaxSize();
-
-    int getCurrentSize();
+    void setMarkerObject(MarkerOptions markerObject, I_Poolable i_poolable);
 }

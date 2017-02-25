@@ -10,7 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.orhanobut.logger.Logger;
 
-import solstudios.app.moduls.mapviews.MapPool.Interfaces.I_MarkerAxis;
+import solstudios.app.moduls.mapviews.MapPool.Interfaces.I_Poolable;
 import solstudios.app.utilities.Devices;
 
 /**
@@ -19,7 +19,7 @@ import solstudios.app.utilities.Devices;
  * Marker Axis chứa Anchor Object, là đối tượng dùng để xác định tương tác và vị trí giữa
  * những statusview với nhau
  */
-public class MarkerAxisView extends AbsMapView implements I_MarkerAxis {
+public class MarkerAxisView extends AbsMapView implements I_Poolable {
 
     public float markerX, markerY;
     public STATUS_SIDE markerStatusSide = STATUS_SIDE.UP;
@@ -60,22 +60,6 @@ public class MarkerAxisView extends AbsMapView implements I_MarkerAxis {
         this.mMarkerOption = markerOptions;
         this.circleAxisView = circleAxisView;
         init(context);
-    }
-
-
-    @Override
-    public void initializePoolObject() {
-
-    }
-
-    @Override
-    public void finalizePoolObject() {
-
-    }
-
-    @Override
-    public void setMarkerOption(MarkerOptions markerOption) {
-        this.mMarkerOption = markerOption;
     }
 
     int getCurrentHeight() {
@@ -144,11 +128,6 @@ public class MarkerAxisView extends AbsMapView implements I_MarkerAxis {
 
             markerArrangeAlgorithm(screenPositionX, screenPositionY);
         }
-    }
-
-    @Override
-    public boolean isInitialized() {
-        return false;
     }
 
     /**
@@ -324,6 +303,16 @@ public class MarkerAxisView extends AbsMapView implements I_MarkerAxis {
             markerAnchor.needRedraw = true;
             markerAnchor.loadLocation();
         }
+    }
+
+    @Override
+    public void initializePoolObject() {
+
+    }
+
+    @Override
+    public void finalizePoolObject() {
+
     }
 
     public enum STATUS_SIDE {

@@ -2,8 +2,8 @@ package solstudios.app.moduls.mapviews.MapPool;
 
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +19,7 @@ import java.util.Comparator;
 public class MapMarkerBoundHelper {
 
     private ArrayList<MarkerOptions> markerOptionsArrayList;
+    public LatLngBounds currentMapBound;
 
     public MapMarkerBoundHelper() {
         markerOptionsArrayList = new ArrayList<MarkerOptions>() {
@@ -40,21 +41,29 @@ public class MapMarkerBoundHelper {
      */
     public ArrayList<MarkerOptions> sortArrayBaseOnLatLn(LatLng latLng, LatLng topLatLn) {
         //Logger.d("Lat: " + latLng.latitude + "|Long: " + latLng.longitude);
-        double maxDistance =
+
+        /*double maxDistance =
                 Math.sqrt(
                         ((latLng.latitude - topLatLn.latitude)
                                 * (latLng.latitude - topLatLn.latitude))
                                 + (latLng.longitude - topLatLn.longitude)
-                                * (latLng.longitude - topLatLn.longitude));
+                                * (latLng.longitude - topLatLn.longitude));*/
 
         ArrayList<MarkerOptions> arrayListResult = new ArrayList<>();
+        LatLngBounds mLatLngBounds = new LatLngBounds(latLng, topLatLn);
         for (MarkerOptions markerOptions : this.markerOptionsArrayList) {
+            if (mLatLngBounds.contains(markerOptions.getPosition())) {
+                arrayListResult.add(markerOptions);
+            }
+            /*if (
+               ///Nếu marker nằm bên dưới Lat của màn hình,
+               // bên trái Long của màn hình thì loại ngay lập tức
             if (markerOptions.getPosition().latitude < latLng.latitude
                     || markerOptions.getPosition().longitude < latLng.longitude) {
                 continue;
-            }
+            }*/
 
-            double distance =
+          /*  double distance =
                     Math.sqrt(
                             ((latLng.latitude - markerOptions.getPosition().latitude)
                                     * (latLng.latitude - markerOptions.getPosition().latitude))
@@ -64,8 +73,16 @@ public class MapMarkerBoundHelper {
 
             if (distance <= maxDistance) {
                 arrayListResult.add(markerOptions);
-                Logger.d(distance);
-            }
+                double tanA = (latLng.longitude - markerOptions.getPosition().longitude) /
+                        (latLng.latitude - markerOptions.getPosition().latitude);
+                if (tanA > 0 && tanA < 1) {
+                    //Logger.d("Distance = " + distance + ", Degree = " + tanA);
+                }
+
+                //Logger.d(distance);
+            } else {
+                continue;
+            }*/
         }
 
         return arrayListResult;
