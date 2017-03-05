@@ -27,6 +27,7 @@ public class MapImageAsymmetricGridViewItem implements AsymmetricItem {
     private int columnSpan;
     private int rowSpan;
     private int position;
+    private String imageUrl;
 
     public MapImageAsymmetricGridViewItem() {
         this(1, 1, 0);
@@ -77,5 +78,13 @@ public class MapImageAsymmetricGridViewItem implements AsymmetricItem {
         dest.writeInt(columnSpan);
         dest.writeInt(rowSpan);
         dest.writeInt(position);
+    }
+
+    String getImageUrl() {
+        return (this.imageUrl != null) ? this.imageUrl : "http://cdn.wallpapersafari.com/40/25/zMDnPd.jpg";
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

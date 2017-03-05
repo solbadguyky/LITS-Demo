@@ -9,6 +9,8 @@ public interface I_Task {
 
     void onStart(MapRunnn runnable);
 
+    void onStop();
+
     class MapRunnn implements Runnable, I_Task {
         private Context mContext;
 
@@ -33,6 +35,11 @@ public interface I_Task {
 
         @Override
         public void onStart(MapRunnn runnable) {
+
+        }
+
+        @Override
+        public void onStop() {
 
         }
     }

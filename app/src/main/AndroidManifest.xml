@@ -8,14 +8,18 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".AndroidApplication"
         android:allowBackup="true"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -32,7 +36,7 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -43,6 +47,7 @@
             android:label="@string/title_activity_maps"></activity>
         <activity android:name=".moduls.anchorpoint.LayoutAnchorActivity" />
         <activity android:name=".moduls.mapviews.MapViewsActivity" />
+        <activity android:name=".moduls.mapsync.MapSyncActivity" />
     </application>
 
 </manifest>

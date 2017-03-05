@@ -62,5 +62,10 @@ public class TaskSchedule implements I_Task {
 
     }
 
+    @Override
+    public void onStop() {
+
+    }
+
 
 }

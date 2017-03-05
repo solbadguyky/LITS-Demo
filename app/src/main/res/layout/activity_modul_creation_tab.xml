@@ -47,7 +47,11 @@
             android:layout_gravity="bottom"
             android:background="@color/material_grey_200"
             app:layout_anchor="@+id/creationTab"
-            app:layout_anchorGravity="bottom" />
+            app:layout_anchorGravity="bottom">
+
+            <include layout="@layout/creation_editor_view" />
+
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/creationTab"

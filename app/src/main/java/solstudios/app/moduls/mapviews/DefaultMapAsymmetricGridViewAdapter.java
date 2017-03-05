@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -45,7 +48,17 @@ public class DefaultMapAsymmetricGridViewAdapter extends ArrayAdapter<MapImageAs
             TextView textView = new TextView(getContext());
             textView.setTag("textView");
 
+            ImageView imageView = new ImageView(getContext());
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
             v.addView(textView);
+            v.addView(imageView);
+
+            if (item != null) {
+                Picasso.with(getContext()).load(item.getImageUrl()).into(imageView);
+            }
 
         } else {
             v = (FrameLayout) convertView;

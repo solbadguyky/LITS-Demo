@@ -3,11 +3,15 @@ package solstudios.app.moduls.mapviews;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.felipecsl.asymmetricgridview.library.Utils;
+import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView;
+import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridViewAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -79,7 +83,7 @@ public class MapViewsActivity extends FragmentActivity
         circleView = new CircleAxisView(this);
         circleView.setPoint(baseAxis[0], baseAxis[1]);
         // rootView.addView(circleView);
-        markerAxisViewPool = new ObjectPool(this, 3);
+        markerAxisViewPool = new ObjectPool(this, 1);
         markerBoundAdapter = new MapMarkerBoundHelper();
 
     }
@@ -127,6 +131,55 @@ public class MapViewsActivity extends FragmentActivity
                             }
                         });*/
 
+            }
+        });
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                Logger.d(marker.getTitle());
+
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                Logger.d(marker.getTitle());
+
+                return prepareInfoView(marker);
+            }
+
+            private View prepareInfoView(Marker marker) {
+                //prepare InfoView programmatically
+                LayoutInflater layoutInflater = MapViewsActivity.this.getLayoutInflater();
+                View mCustomizeView = layoutInflater.inflate(R.layout.status_view_full, null);
+                mCustomizeView.setLayoutParams(new RelativeLayout.LayoutParams(1000, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                AsymmetricGridView asymmetricGridView = (AsymmetricGridView) findViewById(R.id.statusViewContent_ImageGirdView);
+
+                if (asymmetricGridView != null) {
+                    asymmetricGridView.setRequestedColumnWidth(Utils.dpToPx(MapViewsActivity.this, 120));
+
+                    // initialize your items array
+                    DefaultMapAsymmetricGridViewAdapter adapter = new DefaultMapAsymmetricGridViewAdapter(MapViewsActivity.this);
+
+                    for (int i = 0; i <= 4; i++) {
+                        adapter.add(createItemImage(i));
+                    }
+
+                    AsymmetricGridViewAdapter asymmetricAdapter =
+                            new AsymmetricGridViewAdapter<>(MapViewsActivity.this, asymmetricGridView, adapter);
+
+                    asymmetricGridView.setAdapter(asymmetricAdapter);
+                }
+                return mCustomizeView;
+            }
+
+            MapImageAsymmetricGridViewItem createItemImage(int currentOffset) {
+                int colSpan = Math.random() < 0.2f ? 2 : 1;
+                // Swap the next 2 lines to have items with variable
+                // column/row span.
+                int rowSpan = Math.random() < 0.2f ? 2 : 1;
+                return new MapImageAsymmetricGridViewItem(1, 1, currentOffset);
             }
         });
 
@@ -243,7 +296,7 @@ public class MapViewsActivity extends FragmentActivity
         //
 
         MarkerOptions mMarkerOptions = new MarkerOptions().position(marker)
-                .title("Position_" + i).draggable(false);
+                .title("Position_" + i).draggable(true);
         Marker mMarker = mMap.addMarker(mMarkerOptions);
         mMarker.setTag("Position_" + i);
 

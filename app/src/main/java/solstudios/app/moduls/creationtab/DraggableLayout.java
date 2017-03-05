@@ -347,7 +347,9 @@ public class DraggableLayout extends ViewGroup {
                     if (mHeaderView.findViewById(R.id.creationTab_editorView) != null) {
                         float exactlyPositionY = getCreationBasePostionOnscreen(x, y)[1];
                         if (exactlyPositionY > 0) {
-                            interceptTap = !mDragHelper.isViewUnder(mHeaderView.findViewById(R.id.creationTab_editorView), (int) x, (int) exactlyPositionY);
+                            interceptTap = !mDragHelper.isViewUnder(
+                                    mHeaderView.findViewById(R.id.creationTab_editorView),
+                                    (int) x, (int) exactlyPositionY);
                         }
 
                         //Logger.d(mDragHelper.isViewUnder(mHeaderView.findViewById(R.id.creationTab_editorView), (int) x, (int) y));

@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
         android:background="@color/md_deep_orange_50"
-        android:tag="editorView">
+        android:tag="editorView"
+        android:visibility="gone">
 
         <include layout="@layout/creation_editor_view" />
     </FrameLayout>

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -95,7 +94,7 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
             }
 
             int middlePosition(int bottom) {
-                AppCompatEditText appCompatEditText = (AppCompatEditText) draggableLayout.findViewById(R.id.creationQuickEditorField);
+                /*AppCompatEditText appCompatEditText = (AppCompatEditText) draggableLayout.findViewById(R.id.creationQuickEditorField);
                 if (appCompatEditText != null) {
                     appCompatEditText.setTextSize(20);
                     appCompatEditText.setText("Hello, world");
@@ -106,7 +105,7 @@ public class ModulCreationTabActivity extends AppCompatActivity implements OnMap
 
                     return middlePos;
                 }
-
+                */
                 return 0;
             }
         });

@@ -10,6 +10,7 @@
      -->
 
     <TextView
+        android:id="@+id/statusViewContent_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -19,7 +20,8 @@
         android:maxLines="3"
         android:padding="@dimen/material_component_cards_primary_title_bottom_padding"
         android:text="@string/lorem_short"
-        android:textColor="@color/md_black_1000" />
+        android:textColor="@color/md_black_1000"
+        android:visibility="gone" />
 
     <com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView
         android:id="@+id/statusViewContent_ImageGirdView"
@@ -34,5 +36,17 @@
         android:gravity="center"
         android:listSelector="#00000000"
         android:minHeight="100dp"
+        android:visibility="gone"
         tools:layout_height="300dp" />
+
+    <FrameLayout
+        android:id="@+id/videoHolder"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
+    <VideoView
+        android:id="@+id/video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

@@ -64,6 +64,11 @@ public class ReBaseTaskSchedule implements I_Task {
         getHandler().postDelayed(mapRunnn, 500);
     }
 
+    @Override
+    public void onStop() {
+
+    }
+
     private Handler getHandler() {
         if (mHandler == null) {
             mHandler = new Handler();
